@@ -1,0 +1,26 @@
+# Python 3.10. Pins are the versions the paper's results were produced with.
+torch==2.4.0
+torchvision==0.19.0
+transformers==4.48.0
+tokenizers==0.21.2
+accelerate==1.10.0
+# transformers==4.48 requires huggingface-hub < 1.0
+huggingface-hub>=0.24,<1.0
+safetensors==0.5.3
+sentencepiece==0.2.0
+protobuf==6.31.1
+numpy==2.2.6
+pillow==11.3.0
+matplotlib==3.10.3
+tqdm==4.67.1
+
+# --- stimulus-generation pipeline and LLM-judge scripts (optional) ---
+# diffusers must stay on the torch-2.4-era release: 0.39+ registers custom ops
+# that torch 2.4 cannot parse (crashes on GPU nodes only).
+diffusers==0.31.0
+rembg==2.0.69
+onnxruntime==1.23.2
+opencv-python==4.12.0.88
+scipy>=1.13
+openai==2.49.0
+visual_anagrams @ git+https://github.com/dangeng/visual_anagrams.git

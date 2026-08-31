@@ -1,0 +1,12 @@
+# experiment results and model weights are not tracked
+outputs/*
+!outputs/.gitkeep
+logs/*
+!logs/.gitkeep
+huggingface_cache/
+
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+figures/external/
