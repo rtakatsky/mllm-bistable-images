@@ -612,6 +612,9 @@ if __name__ == "__main__":
                         help="Run tasks[chunk_idx::num_chunks] only. Each (image, ablation_key) pair writes its own "
                              "cache/plots, so chunks are independent; run the aggregate step after all chunks finish.")
     parser.add_argument("--num-chunks", type=int, default=None)
+    parser.add_argument("--prefix", type=str, default="I see a",
+                        help="Assistant prefix for the --images cue-patching prompts. Cache and plot "
+                             "directory slugs include it; the paper's figures use the default.")
     parser.add_argument("--text_only", action="store_true",
                         help="Patch only non-image token positions (~20x faster; the paper's "
                              "top_down_patching_every figures use text-token panels only).")
@@ -704,8 +707,8 @@ if __name__ == "__main__":
                 names = [f"va_s{seed:03d}" for seed in json.load(f)["seeds"]]
         else:
             names = args.images.split(",")
-        x_prompt = ["List every animal in the image, each in one word. It starts with 'x'.", "It is a"]
-        d_prompt = ["List every animal in the image, each in one word. It starts with 'd'.", "It is a"]
+        x_prompt = ["List every animal in the image, each in one word. It starts with 'x'.", args.prefix]
+        d_prompt = ["List every animal in the image, each in one word. It starts with 'd'.", args.prefix]
         tasks = []
         for name in names:
             if name.startswith("va_s") and get_boundary(boundaries, model_id, name, BOUNDARY_SLUG) is None:

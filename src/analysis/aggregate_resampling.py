@@ -22,10 +22,16 @@ PROMPT_FORMATS = {
 
 X_PROMPT = "List every animal in the image, each in one word. It starts with 'x'."
 D_PROMPT = "List every animal in the image, each in one word. It starts with 'd'."
-PREFIX = "It is a"
+PREFIX = "I see a"
 COMPONENTS = ["resid_post", "attn_out", "mlp_out"]
 
 if __name__ == "__main__":
+    import argparse
+    _ap = argparse.ArgumentParser()
+    _ap.add_argument("--prefix", type=str, default=PREFIX,
+                     help="Assistant prefix used by the resampling run whose caches to aggregate "
+                          "(selects the cache-directory slugs; output directories inherit them).")
+    PREFIX = _ap.parse_args().prefix
     results_dir = os.path.join(OUTPUTS_DIR, "resampling_ablation")
     cache_root = os.path.join(results_dir, "cache")
     bistable_image_dir = os.path.join(DATA_DIR, "duck_rabbit")

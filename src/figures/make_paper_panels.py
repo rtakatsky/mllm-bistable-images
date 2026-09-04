@@ -997,8 +997,11 @@ RES_PROMPT_FORMATS = {
     "llava-v1.6-mistral-7b": "[INST] <image>\n{prompt} [/INST]",
     "llama3-llava-next-8b": "<|start_header_id|>system<|end_header_id|>\n\nYou are a helpful language and vision assistant. You are able to understand the visual content that the user provides, and assist the user with a variety of tasks using natural language.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n<image>\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
 }
-RES_X = slugify("List every animal in the image, each in one word. It starts with 'x'." + "It is a")
-RES_D = slugify("List every animal in the image, each in one word. It starts with 'd'." + "It is a")
+# Assistant prefix of the resampling run whose va_all means feed the resampling
+# panels; matches the default prefix used by the rest of the paper.
+RES_PREFIX = "I see a"
+RES_X = slugify("List every animal in the image, each in one word. It starts with 'x'." + RES_PREFIX)
+RES_D = slugify("List every animal in the image, each in one word. It starts with 'd'." + RES_PREFIX)
 _RES_LABELS = {}
 
 
@@ -1011,7 +1014,7 @@ def resampling_labels(model):
     processor = AutoProcessor.from_pretrained(VLM_DICT[model])
     va = valid_va_names(model)[0]
     img = centered_va_image(os.path.join(STIM_DIR, f"{va}.png"), BOUNDARIES, model, va, BASE_SLUG)
-    prompt = RES_PROMPT_FORMATS[model].format(prompt="List every animal in the image, each in one word. It starts with 'd'.") + "It is a"
+    prompt = RES_PROMPT_FORMATS[model].format(prompt="List every animal in the image, each in one word. It starts with 'd'.") + RES_PREFIX
     ids = processor(text=prompt, images=img, return_tensors="pt")["input_ids"][0].tolist()
     img_tok = Counter(ids).most_common(1)[0][0]
     last_img = max(i for i, t in enumerate(ids) if t == img_tok)
